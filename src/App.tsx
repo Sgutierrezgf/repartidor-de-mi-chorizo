@@ -1,15 +1,14 @@
-import Layout from "./components/layout/Layout";
-import AddClient from "./pages/add-clients/AddClient";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Recipes from "./pages/recipe-detalis/Recipes";
+import type { ReactNode } from "react";
 
-function App() {
+
+interface Props {
+  children: ReactNode;
+}
+function App({children}: Props) {
   return (
-    <Layout>
-      <AddClient />
-      <Recipes />
-      <Dashboard />
-    </Layout>
+    <>
+    {children}
+    </>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ingredientesBase } from "../../utilities";
+import { ingredientesBase } from "../../../utilities";
+
 
 const Recipes = () => {
   const [cantidad, setCantidad] = useState(0);

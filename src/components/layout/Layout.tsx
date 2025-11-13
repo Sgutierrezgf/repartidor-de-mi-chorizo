@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+import { NavBar } from "./NavBar";
+import { Footer } from "./Footer";
 
 interface ChildrenProps {
   children: ReactNode;
@@ -7,8 +9,9 @@ interface ChildrenProps {
 const Layout = ({ children }: ChildrenProps) => {
   return (
     <div>
-      <nav>Hola</nav>
+      <NavBar />
       {children}
+      <Footer />
     </div>
   );
 };
