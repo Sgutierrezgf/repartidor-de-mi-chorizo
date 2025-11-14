@@ -1,10 +1,13 @@
-import AppRouter from './AppRouter'
-import App from './App'
+import AppRouter from "./AppRouter";
+import App from "./App";
+import { GlobalProvider } from "./context/global.provider";
 
 export const AppHookContainer = () => {
   return (
-    <App>
+    <GlobalProvider>
+      <App>
         <AppRouter />
-    </App>
-  )
-}
+      </App>
+    </GlobalProvider>
+  );
+};

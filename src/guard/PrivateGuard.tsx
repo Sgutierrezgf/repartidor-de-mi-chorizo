@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { useGlobalContext } from '../context/global.context';
 
 
 export const PrivateGuard = () => {
-    const authenticated = true; 
-
+    const { auth } = useGlobalContext();
+  console.log('PrivateGuard auth:', auth);
 
   return (
-    authenticated ? <Outlet /> : <Navigate to='/login' replace />
+    auth.token ? <Outlet /> : <Navigate to='/login' replace />
   )
 }

@@ -11,7 +11,7 @@ const AppRouter = () => {
       <RoutesWithNotFound>
         <Route path="/" element={<Navigate to={"/login"} />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<PrivateGuard />}>
+        <Route element={ <PrivateGuard />}>
           <Route path="/private/*" element={<PrivateRouter />} />
         </Route>
       </RoutesWithNotFound>
