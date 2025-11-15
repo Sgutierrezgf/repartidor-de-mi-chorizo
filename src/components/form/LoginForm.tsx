@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
 import CustomInput from "./components/CustomInput";
-
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/global.context";
 import { supabase } from "../../utilities";
@@ -32,7 +30,6 @@ export const LoginForm = () => {
       return;
     }
 
-    // Guardar estado global
     setAuth({
       user: authData.user,
       token: authData.session?.access_token ?? null,
@@ -43,7 +40,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <CustomInput<LoginFormValues>
         name="email"
         control={control}

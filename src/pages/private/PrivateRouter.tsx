@@ -12,7 +12,7 @@ export const PrivateRouter = () => {
         <Route path="/" element={<Navigate to="/add-client" />} />
         <Route path="/add-clients" element={<AddClient />} />
         <Route path="/recipe" element={<Recipes />} />
-        <Route path="/dasboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
     </RoutesWithNotFound>
       </Layout>
   );

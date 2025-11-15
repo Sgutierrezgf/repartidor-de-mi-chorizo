@@ -21,7 +21,6 @@ export const GlobalProvider = ({ children }: GlobalProps) => {
   const [auth, setAuth] = useState<AuthState>(initialAuth);
   const [loading, setLoading] = useState(true);
 
-  
   useEffect(() => {
     const loadSession = async () => {
       const {
@@ -35,13 +34,12 @@ export const GlobalProvider = ({ children }: GlobalProps) => {
         });
       }
 
-      setLoading(false); 
+      setLoading(false);
     };
 
     loadSession();
   }, []);
 
-  
   useEffect(() => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
@@ -59,7 +57,6 @@ export const GlobalProvider = ({ children }: GlobalProps) => {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
-  
   if (loading) return <div>Cargando...</div>;
 
   return (

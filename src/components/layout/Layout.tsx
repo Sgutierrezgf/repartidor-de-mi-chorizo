@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { NavBar } from "./NavBar";
-import { Footer } from "./Footer";
+import { NavBar } from "../navbar/NavBar";
+import { Footer } from "../footer/Footer";
 
 interface ChildrenProps {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface ChildrenProps {
 
 const Layout = ({ children }: ChildrenProps) => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col justify-between bg-gray-100">
       <NavBar />
       {children}
       <Footer />

@@ -1,36 +1,73 @@
-.is-invalid {
-    border-color: red;
+/* ---------------------------------------
+   Variables globales (colores del formulario)
+--------------------------------------- */
+:root {
+  --form-border: #d1d5db;        /* gray-300 */
+  --form-border-focus: #3b82f6; /* blue-500 */
+  --form-error: #dc2626;        /* red-600 */
+  --form-bg: #ffffff;
+  --form-text: #111827;         /* gray-900 */
 }
 
-.error {
-    color: red;
-    max-width: 200px;
-    margin-top: 0.25rem;
+/* Dark Mode */
+.dark {
+  --form-border: #4b5563;         /* gray-600 */
+  --form-border-focus: #60a5fa;   /* blue-400 */
+  --form-error: #f87171;          /* red-400 */
+  --form-bg: #1f2937;             /* gray-800 */
+  --form-text: #e5e7eb;           /* gray-200 */
 }
 
+/* ---------------------------------------
+   Form group (estructura limpia)
+--------------------------------------- */
 .form-group {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .form-group label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
+  font-weight: 600;
+  color: var(--form-text);
 }
 
-.form-group input {
-    max-width: 200px;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
+/* ---------------------------------------
+   Input moderno
+--------------------------------------- */
+.form-group input,
 .form-control {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 0.2rem;
-    width: 100%;
-    box-sizing: border-box;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--form-border);
+  border-radius: 0.5rem;
+  background-color: var(--form-bg);
+  color: var(--form-text);
+  font-size: 1rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+  max-width: 260px;
+}
+
+/* Focus elegante */
+.form-group input:focus,
+.form-control:focus {
+  border-color: var(--form-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* blue-focus ring */
+  outline: none;
+}
+
+/* ---------------------------------------
+   Estado error
+--------------------------------------- */
+.is-invalid {
+  border-color: var(--form-error) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25); /* red-focus ring */
+}
+
+.error {
+  color: var(--form-error);
+  font-size: 0.9rem;
+  margin-top: 0.15rem;
+  max-width: 240px;
 }

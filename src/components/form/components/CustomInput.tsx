@@ -17,7 +17,7 @@ const CustomInput = <T extends FieldValues>({
   error,
 }: Props<T>) => {
   return (
-    <div className="form-group">
+    <div className="form-group" >
       <label htmlFor={name}>{label}</label>
 
       <Controller

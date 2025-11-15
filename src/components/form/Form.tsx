@@ -2,6 +2,8 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, type FormValues } from "./models";
 import CustomInput from "./components/CustomInput";
+import { sendClientData } from "../../services/ClientsApi";
+import { Button } from "../bottons/Button";
 
 const Form = () => {
   const {
@@ -12,11 +14,17 @@ const Form = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if(data){
+      sendClientData(data);
+        alert("Data sent successfully!");
+    } else {
+     alert("Data dont sent !");
+    }
+  }
+    
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <CustomInput
         name="name"
         control={control}
@@ -38,7 +46,7 @@ const Form = () => {
         type="text"
         error={errors.type}
       />
-      <button type="submit">Guardar</button>
+      <Button>Guardar</Button>
     </form>
   );
 };
