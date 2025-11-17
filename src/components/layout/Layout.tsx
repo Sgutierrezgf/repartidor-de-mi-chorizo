@@ -8,7 +8,7 @@ interface ChildrenProps {
 
 const Layout = ({ children }: ChildrenProps) => {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gray-100">
+    <div className="min-h-screen flex flex-col">
       <NavBar />
       {children}
       <Footer />

@@ -4,14 +4,25 @@ import { TableClients } from "../../../components/tableClients/TableClients";
 
 const AddClient = () => {
   return (
-    <div className="flex space-y-6 mb-8">
-      <CardContainer className="w-full max-w-md">
-        <Form />
-      </CardContainer>
-      <CardContainer>
-        <TableClients />
-      </CardContainer>
-    </div>
+    <section className="max-w-6xl mx-auto px-4 py-6 pt-8 space-y-10">
+      
+      {/* Formulario */}
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Registrar Cliente</h2>
+        <CardContainer>
+          <Form />
+        </CardContainer>
+      </div>
+
+      {/* Tabla */}
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Lista de Clientes</h2>
+        <CardContainer>
+          <TableClients />
+        </CardContainer>
+      </div>
+
+    </section>
   );
 };
 

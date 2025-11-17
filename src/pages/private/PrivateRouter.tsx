@@ -7,13 +7,13 @@ import Layout from "../../components/layout/Layout";
 
 export const PrivateRouter = () => {
   return (
-      <Layout>
-    <RoutesWithNotFound>
+    <Layout>
+      <RoutesWithNotFound>
         <Route path="/" element={<Navigate to="/add-client" />} />
         <Route path="/add-clients" element={<AddClient />} />
         <Route path="/recipe" element={<Recipes />} />
         <Route path="/dashboard" element={<Dashboard />} />
-    </RoutesWithNotFound>
-      </Layout>
+      </RoutesWithNotFound>
+    </Layout>
   );
 };

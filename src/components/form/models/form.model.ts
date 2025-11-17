@@ -1,12 +1,13 @@
 import z from "zod";
 
 export const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "El nombre es muy corto" })
-    .max(50, { message: "El nombre es muy largo" }),
-  amount: z.string().min(1, { message: "La cantidad debe ser al menos 1" }),
-  type: z.string().min(7, { message: "el tipo debe ser valido" }),
+  name: z.string().min(2),
+  products: z.array(
+    z.object({
+      type: z.enum(["normal", "pimienta", "picante"]),
+      amount: z.number().min(1),
+    })
+  ).min(1, "Debes agregar al menos un producto")
 });
 
 export type FormValues = z.infer<typeof formSchema>;

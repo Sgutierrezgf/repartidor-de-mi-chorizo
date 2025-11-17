@@ -13,7 +13,7 @@ const Recipes = () => {
   const ingredientes = ingredientesBase({ quantity: cantidad });
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", fontFamily: "sans-serif" }}>
+    <section style={{ maxWidth: 400, margin: "0 auto", fontFamily: "sans-serif" }}>
       <h2>🧂 Calculadora de ingredientes</h2>
 
       <label htmlFor="cantidad">Cantidad de producto final:</label>
@@ -43,7 +43,7 @@ const Recipes = () => {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 };
 
