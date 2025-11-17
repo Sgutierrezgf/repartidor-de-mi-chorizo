@@ -1,13 +1,13 @@
 import type { FormValues } from "../components/form/models";
 
-const URLGOOGLESCRIPT = "https://script.google.com/macros/s/AKfycbyoBpNVR5PX2pP37Sn4prPzcJ366WcpcuNtrRbLIcEmkTMOONYtSGVMWAUYFZI9AAOlhg/exec";
+const URLGOOGLESCRIPT = import.meta.env.VITE_URL_API;
 
 export const sendClientData = async (data: FormValues) => {
   const response = await fetch(
     URLGOOGLESCRIPT,
     {
       method: "POST",
-      mode: "cors",
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
