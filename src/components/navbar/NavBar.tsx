@@ -122,7 +122,7 @@ export const NavBar = () => {
           </Link>
 
           <div className="pt-6">
-            <Button className="w-full">Logout</Button>
+            <Button>Logout</Button>
           </div>
         </nav>
       </aside>
