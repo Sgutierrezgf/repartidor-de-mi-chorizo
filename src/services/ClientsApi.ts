@@ -1,38 +1,38 @@
-import type { FormValues } from "../components/form/models";
+import { supabase } from "../utilities";
 
-const URLGOOGLESCRIPT = import.meta.env.VITE_URL_API;
-
-export const sendClientData = async (data: FormValues) => {
-  const response = await fetch(
-    URLGOOGLESCRIPT,
-    {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
-
-  const result = await response.json();
-  console.log("Respuesta de Google Apps Script:", result);
+export interface clientsDelivery {
+  id?: number,
+  created_at?: string,
+  name: string;
+  normal: number;
+  pepper: number;
+  spicy: number;
+  payment: boolean
+}
+export const sendClientData = async (dataDelivery: clientsDelivery) => {
+  await supabase
+    .from("delivery_clients")
+    .insert([
+      {
+      "name": dataDelivery.name,
+      "normal": dataDelivery.normal,
+      "pepper": dataDelivery.pepper,
+      "spicy": dataDelivery.spicy,
+      "payment": false
+      }
+    ])
+    console.log(dataDelivery, 'soy el pedido')
 };
 
-export const getClientsData = async () => {
-  const response = await fetch(
-    URLGOOGLESCRIPT,
-    {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  );
+export const getClientsData = async (): Promise<clientsDelivery[] | null> => {
+  const { data, error } = await supabase
+    .from("delivery_clients")
+    .select();
 
-  const data = await response.json();
-  console.log("Datos recibidos de Google Sheets:", data);
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return data;
 };

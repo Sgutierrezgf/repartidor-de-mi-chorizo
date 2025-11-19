@@ -18,13 +18,25 @@ const Form = () => {
 
   const onSubmit = (data: FormValues) => {
 
-      const apiPayload = {
-      name: data.name,
-      products: data.products ?? []
-    };
+  const totals = {
+    normal: 0,
+    pepper: 0,
+    spicy: 0,
+    payment: false
+  };
 
+  data.products.forEach(p => {
+    if (p.type === "normal") totals.normal += p.amount;
+    if (p.type === "pimienta") totals.pepper += p.amount;
+    if (p.type === "picante") totals.spicy += p.amount;
+  });
 
-    sendClientData(apiPayload);
+  const apiPayload = {
+    name: data.name,
+    ...totals
+  };
+
+  sendClientData(apiPayload);
     
   };
 
