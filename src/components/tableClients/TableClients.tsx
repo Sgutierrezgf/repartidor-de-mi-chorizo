@@ -1,36 +1,39 @@
-import { useEffect, useState } from "react";
-import { getClientsData, type clientsDelivery } from "../../services/ClientsApi";
-// import { getClientsData } from "../../services/ClientsApi";
+import { useEffect } from "react";
+import {
+  getClientsData,
+  updateClientPayment,
+  type TableClientsProps,
+} from "../../services/ClientsApi";
 
-export const TableClients = () => {
-
-
-  const [clients, setClients] = useState<clientsDelivery[]>([]);
-
+export const TableClients = ({ clients, setClients }: TableClientsProps) => {
   useEffect(() => {
-    const fetchClients = async () => {
-      const dataClients = await getClientsData()
-      if(dataClients){
-        setClients(dataClients)
-      }
-    }
-    fetchClients()
-  }, [])
+    (async () => {
+      const data = await getClientsData();
+      if (data) setClients(data);
+    })();
+  }, [setClients]);
 
-  console.log(clients)
-
-  const onTogglePaid = (id: number) => {
+  const onTogglePaid = async (id: number) => {
     setClients((prev) =>
-      prev.map((client) =>
-        client.id === id ? { ...client, payment: !client.payment } : client
-      )
+      prev.map((c) => (c.id === id ? { ...c, payment: !c.payment } : c))
     );
+
+    const current = clients.find((c) => c.id === id);
+    const newPaid = !current?.payment;
+
+    const success = await updateClientPayment(id, newPaid);
+
+    if (!success) {
+      // revertir
+      setClients((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, payment: !newPaid } : c))
+      );
+    }
   };
 
   return (
     <div className="overflow-x-auto mt-6 shadow-lg rounded-xl border border-gray-200 bg-white">
       <table className="w-full table-auto">
-
         {/* Encabezado */}
         <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
           <tr>
@@ -44,6 +47,13 @@ export const TableClients = () => {
 
         {/* Cuerpo */}
         <tbody className="text-gray-600">
+          {clients.length === 0 && (
+            <tr>
+              <td colSpan={5} className="px-4 py-3 text-center text-gray-400">
+                No data
+              </td>
+            </tr>
+          )}
           {clients.map((client) => (
             <tr
               key={client.id}
@@ -59,14 +69,13 @@ export const TableClients = () => {
                 <input
                   type="checkbox"
                   checked={client.payment}
-                  onChange={() => onTogglePaid(client.id!)}
+                  onChange={() => onTogglePaid(client.id)}
                   className="w-5 h-5 accent-green-600 cursor-pointer"
                 />
               </td>
             </tr>
           ))}
         </tbody>
-
       </table>
     </div>
   );

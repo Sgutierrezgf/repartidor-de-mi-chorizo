@@ -2,9 +2,9 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, type FormValues } from "./models";
 import { Button } from "../bottons/Button";
-import { sendClientData } from "../../services/ClientsApi";
+import { sendClientData, type FormProps  } from "../../services/ClientsApi";
 
-const Form = () => {
+const Form = ({ setClients }: FormProps ) => {
   const { control, handleSubmit, register } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {}
@@ -16,28 +16,31 @@ const Form = () => {
   });
 
 
-  const onSubmit = (data: FormValues) => {
+ const onSubmit = async (data: FormValues) => {
+    const totals = {
+      normal: 0,
+      pepper: 0,
+      spicy: 0,
+      payment: false
+    };
 
-  const totals = {
-    normal: 0,
-    pepper: 0,
-    spicy: 0,
-    payment: false
-  };
+    data.products.forEach(p => {
+      if (p.type === "normal") totals.normal += p.amount;
+      if (p.type === "pimienta") totals.pepper += p.amount;
+      if (p.type === "picante") totals.spicy += p.amount;
+    });
 
-  data.products.forEach(p => {
-    if (p.type === "normal") totals.normal += p.amount;
-    if (p.type === "pimienta") totals.pepper += p.amount;
-    if (p.type === "picante") totals.spicy += p.amount;
-  });
+    const apiPayload = {
+      name: data.name,
+      ...totals,
+      payment: false
+    };
 
-  const apiPayload = {
-    name: data.name,
-    ...totals
-  };
+    const newClient = await sendClientData(apiPayload);
 
-  sendClientData(apiPayload);
-    
+    if (newClient) {
+      setClients(prev => [...prev, newClient]);
+    }
   };
 
   return (
