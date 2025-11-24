@@ -23,6 +23,7 @@ export const TableClients = ({ clients, setClients }: TableClientsProps) => {
 
     const success = await updateClientPayment(id, newPaid);
 
+
     if (!success) {
       // revertir
       setClients((prev) =>
@@ -31,6 +32,10 @@ export const TableClients = ({ clients, setClients }: TableClientsProps) => {
     }
   };
 
+  // const totalNormal = clients.reduce((sum, client) => sum + client.normal, 0);
+  // const totalPepper = clients.reduce((sum, client) => sum + client.pepper, 0);
+  // const totalSpicy = clients.reduce((sum, client) => sum + client.spicy, 0);  
+  // const totalPaid = totalNormal + totalPepper + totalSpicy;
   return (
     <div className="overflow-x-auto mt-6 shadow-lg rounded-xl border border-gray-200 bg-white">
       <table className="w-full table-auto">
@@ -44,21 +49,23 @@ export const TableClients = ({ clients, setClients }: TableClientsProps) => {
             <th className="px-4 py-3 text-center">paid</th>
           </tr>
         </thead>
-
         {/* Cuerpo */}
         <tbody className="text-gray-600">
-          {clients.length === 0 && (
+          {clients.length === 0  &&  (
             <tr>
               <td colSpan={5} className="px-4 py-3 text-center text-gray-400">
                 No data
               </td>
             </tr>
           )}
-          {clients.map((client) => (
+          {clients
+          .filter((c)=> !c.payment)
+          .map((client) => (
             <tr
               key={client.id}
               className="hover:bg-gray-50 transition-colors border-t"
             >
+              
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.normal}</td>
               <td className="px-4 py-3">{client.pepper}</td>
@@ -75,8 +82,14 @@ export const TableClients = ({ clients, setClients }: TableClientsProps) => {
               </td>
             </tr>
           ))}
+          {/* <td className="px-4 py-3">Total</td>
+          <td className="px-4 py-3">{totalNormal}</td>
+          <td className="px-4 py-3">{totalPepper}</td>
+          <td className="px-4 py-3">{totalSpicy}</td>
+          <td className="px-4 py-3">{totalPaid}</td> */}
         </tbody>
       </table>
+
     </div>
   );
 };

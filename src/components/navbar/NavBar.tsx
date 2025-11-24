@@ -2,10 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/chorizos.jpeg";
 import { Button } from "../bottons/Button";
+import { useGlobalContext } from "../../context/global.context";
+import { supabase } from "../../utilities";
 
 export const NavBar = () => {
+   const { setAuth } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
 
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setAuth({ user: null, token: null });
+    
+  };
   return (
     <>
       {/* NAVBAR TOP */}
@@ -37,6 +45,7 @@ export const NavBar = () => {
             alt="chorizos"
             className="h-10 w-10 rounded-full object-cover"
           />
+          <h1>Los chorizos del flaco</h1>
         </div>
 
         {/* Menu Desktop */}
@@ -48,12 +57,12 @@ export const NavBar = () => {
             <Link to="/private/recipe">Recipe</Link>
           </li>
           <li className="hover:text-red-400 transition-colors">
-            <Link to="/private/dashboard">Dashboard</Link>
+            <Link to="/private/resume">Resume</Link>
           </li>
         </ul>
 
         <div className="hidden md:flex">
-          <Button>Logout</Button>
+          <Button onClick={logout} >Logout</Button>
         </div>
       </nav>
 
@@ -114,15 +123,15 @@ export const NavBar = () => {
             Recipe
           </Link>
           <Link
-            to="/private/dashboard"
+            to="/private/resume"
             onClick={() => setIsOpen(false)}
             className="hover:text-red-400 transition-colors"
           >
-            Dashboard
+            Resume
           </Link>
 
-          <div className="pt-6">
-            <Button>Logout</Button>
+          <div className="w-full mt-4">
+            <Button onClick={logout} >Logout</Button>
           </div>
         </nav>
       </aside>

@@ -47,7 +47,7 @@ const Recipes = () => {
 
       {/* --- RECETAS DESKTOP --- */}
       <div className="hidden md:grid grid-cols-3 gap-6 mt-8">
-        {productTypes.map(({ id, label }) => {
+        {productTypes.map(({ id }) => {
           const cantidad = cantidades[id];
           if (cantidad <= 0) return null;
 
