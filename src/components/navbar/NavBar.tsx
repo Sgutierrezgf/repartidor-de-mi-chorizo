@@ -6,7 +6,7 @@ import { useGlobalContext } from "../../context/global.context";
 import { supabase } from "../../utilities";
 
 export const NavBar = () => {
-   const { setAuth } = useGlobalContext();
+   const { auth, setAuth } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const logout = async () => {
@@ -51,6 +51,9 @@ export const NavBar = () => {
         {/* Menu Desktop */}
         <ul className="hidden md:flex items-center gap-6">
           <li className="hover:text-red-400 transition-colors">
+            <Link to="/orders">Orders</Link>
+          </li>
+          <li className="hover:text-red-400 transition-colors">
             <Link to="/private/add-clients">Clients</Link>
           </li>
           <li className="hover:text-red-400 transition-colors">
@@ -60,10 +63,18 @@ export const NavBar = () => {
             <Link to="/private/resume">Resume</Link>
           </li>
         </ul>
+        {/* {
+          auth.token ?   <div className="hidden md:flex">
+          <Button onClick={logout} >Logout</Button>
+        </div> : null
+        } */}
 
-        <div className="hidden md:flex">
+        {
+          auth.token && <div className="hidden md:flex">
           <Button onClick={logout} >Logout</Button>
         </div>
+        }
+      
       </nav>
 
       {/* OVERLAY */}
@@ -109,6 +120,13 @@ export const NavBar = () => {
 
         <nav className="flex flex-col gap-4 px-4 py-6 text-lg">
           <Link
+            to="/Orders"
+            onClick={() => setIsOpen(false)}
+            className="hover:text-red-400 transition-colors"
+          >
+            Orders
+          </Link>
+          <Link
             to="/private/add-clients"
             onClick={() => setIsOpen(false)}
             className="hover:text-red-400 transition-colors"
@@ -129,10 +147,12 @@ export const NavBar = () => {
           >
             Resume
           </Link>
-
-          <div className="w-full mt-4">
+          {
+            auth.token && <div className="w-full mt-4">
             <Button onClick={logout} >Logout</Button>
           </div>
+          }
+
         </nav>
       </aside>
     </>
