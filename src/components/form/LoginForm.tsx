@@ -43,11 +43,11 @@ export const LoginForm = () => {
   };
 
   return (
-<div className="h-screen grid place-items-center px-4">
-    <div className="w-full max-w-sm mx-auto">
+<div className="h-screen grid place-items-center px-4 ">
+    <div className="w-full max-w-sm mx-auto dark:bg-gray-800 bg-white p-8 rounded-lg shadow-lg">
 
-      <h2 className="text-3xl font-bold text-gray-800 mb-8 text-left">
-        Iniciar sesión
+      <h2 className="text-3xl font-bold text-gray-800 mb-8 text-left dark:text-gray-200">
+        Login
       </h2>
 
       <form
@@ -76,7 +76,7 @@ export const LoginForm = () => {
           </p>
         )}
 
-        <Button type="submit">Ingresar</Button>
+        <Button type="submit">Login</Button>
       </form>
     </div>
   </div>

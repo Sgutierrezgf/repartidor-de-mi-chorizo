@@ -44,42 +44,42 @@ const Form = ({ setClients }: FormProps ) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 dark:text-white">
       
      
-      <div>
-        <label>Nombre</label>
+      <div className="flex flex-col gap-2">
+        <label>Name</label>
         <input 
           {...register("name")} 
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full dark:bg-gray-700 dark:border-gray-600"
         />
       </div>
 
      
       <div className="space-y-4">
-        <h3 className="font-semibold">Productos comprados</h3>
+        <h3 className="font-semibold">sausage styles</h3>
 
         {fields.map((item, index) => (
           <div 
             key={item.id} 
-            className="flex items-center gap-4 bg-gray-50 p-3 rounded"
+            className="flex items-center gap-4 bg-gray-50 p-3 rounded dark:bg-gray-700"
           >
             
            
             <select
               {...register(`products.${index}.type`)}
-              className="border p-2 rounded"
+              className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600"
             >
               <option value="normal">Normal</option>
-              <option value="pimienta">Pimienta</option>
-              <option value="picante">Picante</option>
+              <option value="pimienta">Pepper</option>
+              <option value="picante">Spicy</option>
             </select>
 
           
             <input
               type="number"
               {...register(`products.${index}.amount`, { valueAsNumber: true })}
-              className="border p-2 rounded w-20"
+              className="border p-2 rounded w-20 dark:bg-gray-700 dark:border-gray-600"
             />
 
             
@@ -99,11 +99,11 @@ const Form = ({ setClients }: FormProps ) => {
           onClick={() => append({ type: "normal", amount: 1 })}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          + Agregar tipo
+          + Add sausage
         </button>
       </div>
 
-      <Button>Guardar</Button>
+      <Button>Save</Button>
     </form>
   );
 };

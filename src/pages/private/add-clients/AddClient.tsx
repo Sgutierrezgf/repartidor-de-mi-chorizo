@@ -5,7 +5,7 @@ import { TableClients } from "../../../components/tableClients/TableClients";
 import { getClientsData, type ClientRow } from "../../../services/ClientsApi";
 
 const AddClient = () => {
-   const [clients, setClients] = useState<ClientRow[]>([]);
+  const [clients, setClients] = useState<ClientRow[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -15,18 +15,15 @@ const AddClient = () => {
   }, []);
 
   return (
-<section className="max-w-6xl mx-auto px-4 py-6 pt-8">
-
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Lista de Pedidos
+    <section className="max-w-6xl mx-auto px-4 py-6 pt-16 dark:text-gray-200">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 dark:text-gray-200">
+        Order List
       </h2>
 
       <CardContainer>
         <TableClients clients={clients} setClients={setClients} />
       </CardContainer>
-
     </section>
-
   );
 };
 

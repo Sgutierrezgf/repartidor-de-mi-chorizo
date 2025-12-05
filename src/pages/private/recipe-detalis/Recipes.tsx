@@ -5,8 +5,8 @@ type ProductType = "normal" | "picante" | "pimienta";
 
 const productTypes: { id: ProductType; label: string }[] = [
   { id: "normal", label: "Normal" },
-  { id: "pimienta", label: "Pimienta" },
-  { id: "picante", label: "Picante" },
+  { id: "pimienta", label: "Pepper" },
+  { id: "picante", label: "Spicy" },
 ];
 
 const Recipes = () => {
@@ -24,15 +24,14 @@ const Recipes = () => {
   };
 
   return (
-    <section className="max-w-3xl mx-auto p-4 font-sans mt-4">
-      <h2 className="text-2xl font-bold mb-6">
-        🧂 Calculadora de ingredientes
+    <section className="max-w-3xl mx-auto p-4 font-sans mt-4 pt-16 dark:text-gray-200">
+      <h2 className="text-2xl font-bold mb-6 dark:text-gray-200">
+        🧂 Ingredients calculator
       </h2>
 
-      {/* --- VERSION DESKTOP --- */}
       <div className="hidden md:grid grid-cols-3 gap-4">
         {productTypes.map(({ id, label }) => (
-          <div key={id} className="bg-white shadow-md p-4 rounded-xl border">
+          <div key={id} className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
             <label className="block font-semibold mb-2">{label}</label>
             <input
               type="number"
@@ -45,7 +44,6 @@ const Recipes = () => {
         ))}
       </div>
 
-      {/* --- RECETAS DESKTOP --- */}
       <div className="hidden md:grid grid-cols-3 gap-6 mt-8">
         {productTypes.map(({ id }) => {
           const cantidad = cantidades[id];
@@ -57,14 +55,14 @@ const Recipes = () => {
             <div
               key={id}
               className="bg-white border rounded-2xl shadow-md p-6 w-full min-h-[250px]
-                     transition hover:shadow-lg hover:-translate-y-1"
+                     transition hover:shadow-lg hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-xl">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-xl dark:bg-indigo-600 dark:text-indigo-100">
                   🥣
                 </div>
                 <h3 className="text-lg font-bold">
-                  Ingredientes para {cantidad} Chorizos
+                  Ingredients for {cantidad} Chorizos
                 </h3>
               </div>
 
@@ -72,7 +70,7 @@ const Recipes = () => {
                 {Object.entries(ingredientes).map(([key, { value, unit }]) => (
                   <li
                     key={key}
-                    className="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-lg border"
+                    className="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600"
                   >
                     <span className="font-medium capitalize">
                       {key.replace("_", " ")}
@@ -98,7 +96,7 @@ const Recipes = () => {
           return (
             <div key={id} className="space-y-4">
               {/* INPUT */}
-              <div className="bg-white shadow-md p-4 rounded-xl border">
+              <div className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
                 <label className="block font-semibold mb-2">{label}</label>
                 <input
                   type="number"
@@ -116,11 +114,11 @@ const Recipes = () => {
                          transition hover:shadow-lg hover:-translate-y-1"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-xl">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-xl dark:bg-indigo-600 dark:text-indigo-100">
                       🥣
                     </div>
                     <h3 className="text-xl font-bold">
-                      Ingredientes para {cantidad} Chorizos
+                      Ingredients for {cantidad} Chorizos
                     </h3>
                   </div>
 
@@ -129,7 +127,7 @@ const Recipes = () => {
                       ([key, { value, unit }]) => (
                         <li
                           key={key}
-                          className="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-lg border"
+                          className="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 "
                         >
                           <span className="font-medium capitalize">
                             {key.replace("_", " ")}
