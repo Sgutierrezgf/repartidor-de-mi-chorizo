@@ -5,6 +5,7 @@
         "clients": "Clients",
         "recipe": "Recipe",
         "resume": "Resume"
+       
     },
     "orders": {
         "create_your_order": "Create you order",
@@ -15,7 +16,10 @@
         "name": "Name",
         "sausage_style": "Sausage Style",
         "add_sausage": "Add sausage",
-        "save_order": "Save order"
+        "save_order": "Save order",
+        "paid": "Paid",
+        "calculate": "Ingredients calculator",
+        "ingredients": "Ingredients for {{cantidad}} Chorizos"
     },
     "login":{
         "login": "Login",
@@ -23,5 +27,8 @@
         "password": "Password",
         "login_button": "Login",
         "invalid_credentials": "Invalid username or password"
+    },
+    "clients":{
+        "client_list": "Orders List"
     }
 }

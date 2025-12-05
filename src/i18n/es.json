@@ -15,7 +15,10 @@
         "name": "Nombre",
         "sausage_style": "Estilo de chorizo",
         "add_sausage": "Agregar paquete",
-        "save_order": "Guardar pedido"
+        "save_order": "Guardar pedido",
+        "paid": "Pagado",
+        "calculate": "Calculadora de ingredientes",
+        "ingredients": "Ingredientes para {{cantidad}} Chorizos"
     },
     "login":{
         "login": "Iniciar sesión",
@@ -23,5 +26,8 @@
         "password": "Contraseña",
         "login_button": "Iniciar sesión",
         "invalid_credentials": "Usuario o contraseña inválidos"
+    },
+    "clients":{
+        "client_list": "Lista de pedidos"
     }
 }

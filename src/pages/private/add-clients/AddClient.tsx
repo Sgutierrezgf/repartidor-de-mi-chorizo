@@ -3,8 +3,10 @@ import { CardContainer } from "../../../components/CardContainer/CardContainer";
 // import Form from "../../../components/form/Form";
 import { TableClients } from "../../../components/tableClients/TableClients";
 import { getClientsData, type ClientRow } from "../../../services/ClientsApi";
+import { useTranslation } from "react-i18next";
 
 const AddClient = () => {
+  const { t } = useTranslation();
   const [clients, setClients] = useState<ClientRow[]>([]);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const AddClient = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-6 pt-16 dark:text-gray-200">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 dark:text-gray-200">
-        Order List
+        {t("clients.client_list")}
       </h2>
 
       <CardContainer>

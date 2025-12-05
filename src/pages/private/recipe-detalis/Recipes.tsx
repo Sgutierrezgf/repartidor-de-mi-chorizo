@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { getIngredientesPorTipo } from "../../../utilities/ingredientesPorTipo";
+import { useTranslation } from "react-i18next";
 
 type ProductType = "normal" | "picante" | "pimienta";
 
-const productTypes: { id: ProductType; label: string }[] = [
-  { id: "normal", label: "Normal" },
-  { id: "pimienta", label: "Pepper" },
-  { id: "picante", label: "Spicy" },
+const productTypes: { id: ProductType; key: string }[] = [
+  { id: "normal", key: "orders.normal" },
+  { id: "pimienta", key: "orders.pepper" },
+  { id: "picante", key: "orders.spicy" },
 ];
 
 const Recipes = () => {
@@ -15,6 +16,7 @@ const Recipes = () => {
     picante: 0,
     pimienta: 0,
   });
+  const { t } = useTranslation();
 
   const handleChange = (type: ProductType, value: number) => {
     setCantidades((prev) => ({
@@ -26,18 +28,18 @@ const Recipes = () => {
   return (
     <section className="max-w-3xl mx-auto p-4 font-sans mt-4 pt-16 dark:text-gray-200">
       <h2 className="text-2xl font-bold mb-6 dark:text-gray-200">
-        🧂 Ingredients calculator
+        🧂 {t("orders.calculate")}
       </h2>
 
       <div className="hidden md:grid grid-cols-3 gap-4">
-        {productTypes.map(({ id, label }) => (
-          <div key={id} className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
-            <label className="block font-semibold mb-2">{label}</label>
+        {productTypes.map((p) => (
+          <div key={p.id} className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
+            <label className="block font-semibold mb-2">{t(p.key)}</label>
             <input
               type="number"
               min="0"
-              value={cantidades[id]}
-              onChange={(e) => handleChange(id, Number(e.target.value))}
+              value={cantidades[p.id]}
+              onChange={(e) => handleChange(p.id, Number(e.target.value))}
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -62,7 +64,7 @@ const Recipes = () => {
                   🥣
                 </div>
                 <h3 className="text-lg font-bold">
-                  Ingredients for {cantidad} Chorizos
+                  {t("orders.ingredients", { cantidad})}
                 </h3>
               </div>
 
@@ -88,21 +90,21 @@ const Recipes = () => {
 
       {/* --- VERSION MOBILE: INPUT + RECETA JUNTOS --- */}
       <div className="md:hidden space-y-10">
-        {productTypes.map(({ id, label }) => {
-          const cantidad = cantidades[id];
+        {productTypes.map((p) => {
+          const cantidad = cantidades[p.id];
           const ingredientes =
-            cantidad > 0 ? getIngredientesPorTipo(id, cantidad) : null;
+            cantidad > 0 ? getIngredientesPorTipo(p.id, cantidad) : null;
 
           return (
-            <div key={id} className="space-y-4">
+            <div key={p.id} className="space-y-4">
               {/* INPUT */}
               <div className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
-                <label className="block font-semibold mb-2">{label}</label>
+                <label className="block font-semibold mb-2">{t(p.key)}</label>
                 <input
                   type="number"
                   min="0"
-                  value={cantidades[id]}
-                  onChange={(e) => handleChange(id, Number(e.target.value))}
+                  value={cantidades[p.id]}
+                  onChange={(e) => handleChange(p.id, Number(e.target.value))}
                   className="w-full p-2 border rounded-md"
                 />
               </div>
@@ -118,7 +120,7 @@ const Recipes = () => {
                       🥣
                     </div>
                     <h3 className="text-xl font-bold">
-                      Ingredients for {cantidad} Chorizos
+                      {t("orders.ingredients", { cantidad})}
                     </h3>
                   </div>
 

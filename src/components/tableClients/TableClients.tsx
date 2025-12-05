@@ -4,8 +4,10 @@ import {
   updateClientPayment,
   type TableClientsProps,
 } from "../../services/ClientsApi";
+import { useTranslation } from "react-i18next";
 
 export const TableClients = ({ clients, setClients }: TableClientsProps) => {
+  const { t } = useTranslation();
   useEffect(() => {
     (async () => {
       const data = await getClientsData();
@@ -41,11 +43,11 @@ export const TableClients = ({ clients, setClients }: TableClientsProps) => {
       <table className="w-full table-auto">
         <thead className="bg-gray-100 text-gray-700 uppercase text-sm dark:bg-gray-700 dark:text-gray-300">
           <tr>
-            <th className="px-4 py-3 text-left">Name</th>
-            <th className="px-4 py-3 text-left">normal</th>
-            <th className="px-4 py-3 text-left">pepper</th>
-            <th className="px-4 py-3 text-left">spicy</th>
-            <th className="px-4 py-3 text-center">paid</th>
+            <th className="px-4 py-3 text-left">{t("orders.name")}</th>
+            <th className="px-4 py-3 text-left">{t("orders.normal")}</th>
+            <th className="px-4 py-3 text-left">{t("orders.pepper")}</th>
+            <th className="px-4 py-3 text-left">{t("orders.spicy")}</th>
+            <th className="px-4 py-3 text-center">{t("orders.paid")}</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 dark:text-gray-300">
