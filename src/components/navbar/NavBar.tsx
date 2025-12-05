@@ -5,10 +5,13 @@ import { Button } from "../bottons/Button";
 import { useGlobalContext } from "../../context/global.context";
 import { supabase } from "../../utilities";
 import DarkMode from "../darkMode/DarkMode";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "../languageSwitcher/LanguageSwitcher";
 
 export const NavBar = () => {
   const { auth, setAuth } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -32,7 +35,7 @@ export const NavBar = () => {
           </button>
 
           <img src={logo} alt="chorizos" className="h-10 w-10 rounded-full object-cover" />
-          <h1 className="font-semibold">Flaco's sausage</h1>
+          <h1 className="font-semibold">{t("navbar.title")}</h1>
         </div>
 
         {/* DarkMode — SOLO DESKTOP */}
@@ -41,11 +44,12 @@ export const NavBar = () => {
         <ul className="hidden md:flex items-center gap-6">
         <div className="hidden md:block">
           <DarkMode />
+          <LanguageSwitcher />
         </div>
-          <li><Link className="hover:text-red-400 transition" to="/orders">Orders</Link></li>
-          <li><Link className="hover:text-red-400 transition" to="/private/add-clients">Clients</Link></li>
-          <li><Link className="hover:text-red-400 transition" to="/private/recipe">Recipe</Link></li>
-          <li><Link className="hover:text-red-400 transition" to="/private/resume">Resume</Link></li>
+          <li><Link className="hover:text-red-400 transition" to="/orders">{t("navbar.orders")}</Link></li>
+          <li><Link className="hover:text-red-400 transition" to="/private/add-clients">{t("navbar.clients")}</Link></li>
+          <li><Link className="hover:text-red-400 transition" to="/private/recipe">{t("navbar.recipe")}</Link></li>
+          <li><Link className="hover:text-red-400 transition" to="/private/resume">{t("navbar.resume")}</Link></li>
 
           {auth.token && (
             <Button onClick={logout}>Logout</Button>
@@ -87,10 +91,10 @@ export const NavBar = () => {
             <DarkMode />
           </div>
 
-          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/orders">Orders</Link>
-          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/add-clients">Clients</Link>
-          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/recipe">Recipe</Link>
-          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/resume">Resume</Link>
+          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/orders">{t("navbar.orders")}</Link>
+          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/add-clients">{t("navbar.clients")}</Link>
+          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/recipe">{t("navbar.recipe")}</Link>
+          <Link onClick={() => setIsOpen(false)} className="hover:text-red-400" to="/private/resume">{t("navbar.resume")}</Link>
 
           {auth.token && (
             <div className="mt-6">

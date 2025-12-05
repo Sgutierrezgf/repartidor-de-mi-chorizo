@@ -1,0 +1,27 @@
+{
+    "navbar":{
+        "title": "Repartidor de mi chorizo",
+        "orders": "Pedidos",
+        "clients": "Clientes",
+        "recipe": "Receta",
+        "resume": "Historial"
+    },
+    "orders": {
+        "create_your_order": "Crea tu pedido",
+        "pepper": "Pimienta",
+        "chorizo": "Chorizo",
+        "spicy": "Picante",
+        "normal": "Normal",
+        "name": "Nombre",
+        "sausage_style": "Estilo de chorizo",
+        "add_sausage": "Agregar paquete",
+        "save_order": "Guardar pedido"
+    },
+    "login":{
+        "login": "Iniciar sesión",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "login_button": "Iniciar sesión",
+        "invalid_credentials": "Usuario o contraseña inválidos"
+    }
+}

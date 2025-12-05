@@ -7,9 +7,11 @@ import { supabase } from "../../utilities";
 import { type LoginFormValues, loginFormSchema } from "./models";
 import { Button } from "../bottons/Button";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setAuth } = useGlobalContext();
   const [messageError, setMessageError] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export const LoginForm = () => {
     <div className="w-full max-w-sm mx-auto dark:bg-gray-800 bg-white p-8 rounded-lg shadow-lg">
 
       <h2 className="text-3xl font-bold text-gray-800 mb-8 text-left dark:text-gray-200">
-        Login
+        {t("login.login")}
       </h2>
 
       <form
@@ -57,7 +59,7 @@ export const LoginForm = () => {
         <CustomInput<LoginFormValues>
           name="email"
           control={control}
-          label="Email"
+          label={t("login.email")}
           type="text"
           error={errors.email}
         />
@@ -65,7 +67,7 @@ export const LoginForm = () => {
         <CustomInput<LoginFormValues>
           name="password"
           control={control}
-          label="Password"
+          label={t("login.password")}
           type="password"
           error={errors.password}
         />
@@ -76,7 +78,7 @@ export const LoginForm = () => {
           </p>
         )}
 
-        <Button type="submit">Login</Button>
+        <Button type="submit">{t("login.login_button")}</Button>
       </form>
     </div>
   </div>

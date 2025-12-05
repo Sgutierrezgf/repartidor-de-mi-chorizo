@@ -3,8 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, type FormValues } from "./models";
 import { Button } from "../bottons/Button";
 import { sendClientData, type FormProps  } from "../../services/ClientsApi";
+import { useTranslation } from "react-i18next";
 
 const Form = ({ setClients }: FormProps ) => {
+  const { t } = useTranslation();
   const { control, handleSubmit, register } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {}
@@ -48,7 +50,7 @@ const Form = ({ setClients }: FormProps ) => {
       
      
       <div className="flex flex-col gap-2">
-        <label>Name</label>
+        <label>{t("orders.name")}</label>
         <input 
           {...register("name")} 
           className="border p-2 rounded w-full dark:bg-gray-700 dark:border-gray-600"
@@ -57,7 +59,7 @@ const Form = ({ setClients }: FormProps ) => {
 
      
       <div className="space-y-4">
-        <h3 className="font-semibold">sausage styles</h3>
+        <h3 className="font-semibold">{t("orders.sausage_style")}</h3>
 
         {fields.map((item, index) => (
           <div 
@@ -70,9 +72,9 @@ const Form = ({ setClients }: FormProps ) => {
               {...register(`products.${index}.type`)}
               className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600"
             >
-              <option value="normal">Normal</option>
-              <option value="pimienta">Pepper</option>
-              <option value="picante">Spicy</option>
+              <option value="normal">{t("orders.normal")}</option>
+              <option value="pimienta">{t("orders.pepper")}</option>
+              <option value="picante">{t("orders.spicy")}</option>
             </select>
 
           
@@ -99,11 +101,10 @@ const Form = ({ setClients }: FormProps ) => {
           onClick={() => append({ type: "normal", amount: 1 })}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          + Add sausage
+          {t("orders.add_sausage")}
         </button>
       </div>
-
-      <Button>Save</Button>
+      <Button> {t("orders.save_order")}</Button>
     </form>
   );
 };
