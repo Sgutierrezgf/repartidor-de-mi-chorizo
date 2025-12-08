@@ -98,7 +98,7 @@ export const NavBar = () => {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-40 md:hidden z-40 dark:bg-opacity-70"
+          className="fixed inset-0 bg-opacity-40 md:hidden z-40 dark:bg-opacity-70"
         />
       )}
 
@@ -106,7 +106,7 @@ export const NavBar = () => {
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-50 transform
          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-         transition-transform duration-300`}
+         transition-transform duration-300 ease-in-out md:hidden dark:bg-gray-800`}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
           <img
@@ -114,7 +114,7 @@ export const NavBar = () => {
             alt="chorizos"
             className="h-10 w-10 rounded-full object-cover"
           />
-
+          <h1 className="px-2" >{t("navbar.title")}</h1>
           <button onClick={() => setIsOpen(false)} className="text-white">
             <svg
               className="w-7 h-7"

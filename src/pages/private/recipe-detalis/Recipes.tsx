@@ -33,7 +33,10 @@ const Recipes = () => {
 
       <div className="hidden md:grid grid-cols-3 gap-4">
         {productTypes.map((p) => (
-          <div key={p.id} className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700">
+          <div
+            key={p.id}
+            className="bg-white shadow-md p-4 rounded-xl border dark:bg-gray-800 dark:border-gray-700"
+          >
             <label className="block font-semibold mb-2">{t(p.key)}</label>
             <input
               type="number"
@@ -64,7 +67,7 @@ const Recipes = () => {
                   🥣
                 </div>
                 <h3 className="text-lg font-bold">
-                  {t("orders.ingredients", { cantidad})}
+                  {t("orders.ingredients", { cantidad })}
                 </h3>
               </div>
 
@@ -113,14 +116,14 @@ const Recipes = () => {
               {cantidad > 0 && (
                 <div
                   className="bg-white border rounded-2xl shadow-md p-6 w-full
-                         transition hover:shadow-lg hover:-translate-y-1"
+                         transition hover:shadow-lg hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700"
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-xl dark:bg-indigo-600 dark:text-indigo-100">
                       🥣
                     </div>
                     <h3 className="text-xl font-bold">
-                      {t("orders.ingredients", { cantidad})}
+                      {t("orders.ingredients", { cantidad })}
                     </h3>
                   </div>
 

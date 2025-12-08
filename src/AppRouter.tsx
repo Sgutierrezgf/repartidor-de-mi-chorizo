@@ -13,7 +13,7 @@ const AppRouter = () => {
       <ThemeProvider>
         <Layout>
           <RoutesWithNotFound>
-            <Route path="/" element={<Navigate to={"/login"} />} />
+            <Route path="/" element={<Navigate to={"/orders"} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/orders" element={<Orders />} />
             <Route element={<PrivateGuard />}>

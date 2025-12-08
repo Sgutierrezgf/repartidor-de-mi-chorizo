@@ -1,5 +1,5 @@
 {
-    "navbar":{
+    "navbar": {
         "title": "Repartidor de mi chorizo",
         "orders": "Pedidos",
         "clients": "Clientes",
@@ -20,14 +20,38 @@
         "calculate": "Calculadora de ingredientes",
         "ingredients": "Ingredientes para {{cantidad}} Chorizos"
     },
-    "login":{
+    "login": {
         "login": "Iniciar sesión",
         "email": "Correo electrónico",
         "password": "Contraseña",
         "login_button": "Iniciar sesión",
         "invalid_credentials": "Usuario o contraseña inválidos"
     },
-    "clients":{
+    "clients": {
         "client_list": "Lista de pedidos"
+    },
+    "notfound": {
+        "title": "¡Oops! Esta página no existe",
+        "message": "Puede que el enlace esté roto o que la página haya sido movida. No te preocupes, te ayudamos a volver.",
+        "go_home": " Regresar al inicio"
+    },
+    "cycles": {
+        "title": "Reporte de ciclo",
+        "select": "Seleccionar ciclo",
+        "select_cycle": "Seleccione un ciclo",
+        "Ciclo": "Ciclo",
+        "costs": "Costos de producción",
+        "boton": "Generar reporte",
+        "fecha": "Fecha",
+        "clients": "Clientes",
+        "total": "Total pedidos",
+        "financial": "Resumen financiero",
+        "Income": "Ingresos",
+        "delivery_costs": "Cobro domicilio",
+        "production_costs": "Costos de producción",
+        "profit": "Ganancia neta"
+    },
+    "footer": {
+        "rights": "© 2025 Repartidor de mi Chorizo. Todos los derechos reservados."
     }
 }

@@ -1,11 +1,10 @@
 {
-    "navbar":{
+    "navbar": {
         "title": "Flaco's Sausage",
         "orders": "Orders",
         "clients": "Clients",
         "recipe": "Recipe",
         "resume": "Resume"
-       
     },
     "orders": {
         "create_your_order": "Create you order",
@@ -21,14 +20,38 @@
         "calculate": "Ingredients calculator",
         "ingredients": "Ingredients for {{cantidad}} Chorizos"
     },
-    "login":{
+    "login": {
         "login": "Login",
         "email": "email",
         "password": "Password",
         "login_button": "Login",
         "invalid_credentials": "Invalid username or password"
     },
-    "clients":{
+    "clients": {
         "client_list": "Orders List"
+    },
+    "notfound": {
+        "title": "Oops! This page does not exist",
+        "message": "The link may be broken or the page may have moved. Don't worry, we'll help you get back.",
+        "go_home": "Return to orders"
+    },
+    "cycles": {
+        "title": "Cycle Report",
+        "select": "Cycle select",
+        "select_cycle": "Select cycle",
+        "Ciclo": "Cycle",
+        "costs": "Production Costs",
+        "boton": "Generate Report",
+        "fecha": "Date",
+        "clients": "Clients",
+        "total": "Total Orders",
+        "financial": "Financial Summary",
+        "Income": "Income",
+        "delivery_costs": "Delivery Fee",
+        "production_costs": "Production Costs",
+        "profit": "Net Profit"
+    },
+    "footer": {
+        "rights": "2025 Flaco's Sausage. All rights reserved."
     }
 }

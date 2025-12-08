@@ -1,5 +1,8 @@
 import  { type ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import NotFound from '../../pages/public/notfound/NotFound'
+
+
 
 interface Props {
     children: ReactNode
@@ -10,7 +13,7 @@ const RoutesWithNotFound = ({children}: Props) => {
     <Routes>
         {children}
         <Route path="*" element={<Navigate to='/404'/>} />
-        <Route path="/404" element={<div>404 Not Found</div>} />
+        <Route path="/404" element={<NotFound />} />
     </Routes>
   )
 }
