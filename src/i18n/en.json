@@ -53,5 +53,30 @@
     },
     "footer": {
         "rights": "2025 Flaco's Sausage. All rights reserved."
+    },
+    "messages": {
+        "order_saved": "Order saved successfully",
+        "order_error": "Error saving order, please try again",
+        "cycle_generated": "Cycle report generated successfully",
+        "cycle_error": "Error generating cycle report, please try again",
+        "login_error": "Login failed, please check your credentials",
+        "logout_success": "You have been logged out successfully",
+        "logout_error": "Error logging out, please try again",
+        "client_not_found": "Client not found",
+        "invalid_input": "Invalid input, please check the data entered",
+        "unauthorized": "You are not authorized to perform this action",
+        "server_error": "Server error, please try again later",
+        "network_error": "Network error, please check your connection",
+        "form_incomplete": "Please complete all required fields in the form",
+        "action_successful": "Action completed successfully",
+        "action_failed": "Action failed, please try again",
+        "data_loaded": "Data loaded successfully",
+        "data_load_error": "Error loading data, please try again",
+        "not_ordered_yet": "Orders are not enabled at this moment.",
+        "cycle_state": "Cycle state",
+        "closed": "closed",
+        "open": "open",
+        "boton_order": "Enable orders",
+        "boton_close": "Close cycle"
     }
 }

@@ -4,9 +4,11 @@ import { formSchema, type FormValues } from "./models";
 import { Button } from "../bottons/Button";
 import { sendClientData, type FormProps  } from "../../services/ClientsApi";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const Form = ({ setClients }: FormProps ) => {
   const { t } = useTranslation();
+  const [message, setMessage] = useState("");
   const { control, handleSubmit, register } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {}
@@ -19,6 +21,7 @@ const Form = ({ setClients }: FormProps ) => {
 
 
  const onSubmit = async (data: FormValues) => {
+   setMessage("");
     const totals = {
       normal: 0,
       pepper: 0,
@@ -42,12 +45,20 @@ const Form = ({ setClients }: FormProps ) => {
 
     if (newClient) {
       setClients(prev => [...prev, newClient]);
+      setMessage(t("messages.order_saved"));
+    } else {
+      setMessage(t("messages.order_error"));
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 dark:text-white">
-      
+       {message && (
+        <div className="p-2 rounded bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-300">
+          {message}
+        </div>
+      )}
+
      
       <div className="flex flex-col gap-2">
         <label>{t("orders.name")}</label>

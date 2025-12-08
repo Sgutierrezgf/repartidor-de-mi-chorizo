@@ -52,22 +52,22 @@ const AddClient = () => {
             onClick={handleOpenOrders}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl"
           >
-            Habilitar pedidos
+            {t("messages.boton_order")}
           </button>
         ) : (
           <button
             onClick={handleCloseOrders}
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl"
           >
-            Cerrar pedidos
+            {t("messages.boton_close")}
           </button>
         )}
       </div>
 
       <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">
-        Estado del ciclo:{" "}
+        {t("messages.cycle_state")}:{" "}
         <span className={`font-semibold ${activeCycle ? "text-green-500" : "text-red-500"}`}>
-          {activeCycle ? "Activo" : "Cerrado"}
+          {activeCycle ? t("messages.open") : t("messages.closed")}
         </span>
       </p>
 

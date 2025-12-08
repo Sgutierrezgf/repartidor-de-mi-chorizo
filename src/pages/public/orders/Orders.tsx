@@ -32,7 +32,7 @@ const Orders = () => {
       {
         !cycle ? (
           <div className="p-4 bg-yellow-200 text-yellow-900 rounded-lg text-center">
-            Los pedidos no están habilitados en este momento.
+            {t("messages.not_ordered_yet")}
           </div>
         ) : (
           <>

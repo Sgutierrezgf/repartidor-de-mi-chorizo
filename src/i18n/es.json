@@ -53,5 +53,30 @@
     },
     "footer": {
         "rights": "© 2025 Repartidor de mi Chorizo. Todos los derechos reservados."
+    },
+    "messages": {
+        "order_saved": "Pedido guardado correctamente",
+        "order_error": "Error al guardar el pedido, por favor intenta de nuevo",
+        "cycle_generated": "Reporte de ciclo generado correctamente",
+        "cycle_error": "Error al generar el reporte de ciclo, por favor intenta de nuevo",
+        "login_error": "Error al iniciar sesión, verifica tus credenciales",
+        "logout_success": "Has cerrado sesión correctamente",
+        "logout_error": "Error al cerrar sesión, por favor intenta de nuevo",
+        "client_not_found": "Cliente no encontrado",
+        "invalid_input": "Entrada inválida, por favor verifica los datos ingresados",
+        "unauthorized": "No estás autorizado para realizar esta acción",
+        "server_error": "Error del servidor, por favor intenta más tarde",
+        "network_error": "Error de red, verifica tu conexión",
+        "form_incomplete": "Por favor completa todos los campos requeridos del formulario",
+        "action_successful": "Acción completada correctamente",
+        "action_failed": "La acción falló, por favor intenta de nuevo",
+        "data_loaded": "Datos cargados correctamente",
+        "data_load_error": "Error al cargar los datos, por favor intenta de nuevo",
+        "not_ordered_yet": "Los pedidos no están habilitados en este momento.",
+        "cycle_state": "Estado del ciclo",
+        "closed": "Cerrado",
+        "open": "Abierto",
+        "boton_order": "Habilitar pedidos",
+        "boton_close": "Cerrar ciclo"
     }
 }
