@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import logo from "../../assets/img/chorizos.jpeg";
 import { Button } from "../bottons/Button";
 import { PrefsControls } from "../prefs/PrefsControls";
 import { supabase } from "../../utilities";
@@ -51,9 +50,9 @@ export const NavBar = () => {
               </svg>
             </button>
             <img
-              src={logo}
+              src="/chorizos.svg"
               alt=""
-              className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-line"
+              className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-line bg-paper"
             />
             <div className="min-w-0 leading-tight">
               <p className="font-display truncate text-sm font-bold text-ink sm:text-base">

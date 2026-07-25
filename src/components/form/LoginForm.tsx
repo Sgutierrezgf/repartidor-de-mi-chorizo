@@ -8,7 +8,6 @@ import { useGlobalContext } from "../../context/global.context";
 import { supabase } from "../../utilities";
 import { Button } from "../bottons/Button";
 import { PrefsControls } from "../prefs/PrefsControls";
-import logo from "../../assets/img/chorizos.jpeg";
 
 export const LoginForm = () => {
   const { t } = useTranslation();
@@ -68,9 +67,9 @@ export const LoginForm = () => {
       <div className="rounded-lg border border-line bg-surface p-6 sm:p-8">
         <div className="mb-6 flex items-center gap-3">
           <img
-            src={logo}
+            src="/chorizos.svg"
             alt=""
-            className="h-14 w-14 rounded-full object-cover ring-1 ring-line"
+            className="h-14 w-14 rounded-full object-cover ring-1 ring-line bg-paper"
           />
           <div>
             <h1 className="font-display text-2xl font-bold">{t("brand.title")}</h1>
