@@ -6,11 +6,15 @@ import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { Button } from "../../../components/bottons/Button";
 import {
+  closeCycle,
+  createCycle,
   createVenta,
+  getActiveCycle,
   getVentas,
   updateVentaPago,
   type VentaDirecta,
 } from "../../../services/ventasApi";
+import type { ActiveCycle } from "../../../types/cycles";
 
 const ventaSchema = z.object({
   name: z.string().min(2, "Escribe el nombre"),
@@ -31,10 +35,12 @@ const totalPackages = (v: VentaDirecta) => v.normal + v.pepper + v.spicy;
 
 const Ventas = () => {
   const [ventas, setVentas] = useState<VentaDirecta[]>([]);
+  const [activeCycle, setActiveCycle] = useState<ActiveCycle | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [cycleBusy, setCycleBusy] = useState(false);
 
   const {
     control,
@@ -59,15 +65,31 @@ const Ventas = () => {
   const load = async () => {
     setLoading(true);
     setError(null);
-    const data = await getVentas();
+    const [data, cycle] = await Promise.all([getVentas(), getActiveCycle()]);
     if (data) setVentas(data);
     else setError("No se pudieron cargar las ventas.");
+    setActiveCycle(cycle);
     setLoading(false);
   };
 
   useEffect(() => {
     load();
   }, []);
+
+  const onToggleCycle = async () => {
+    setCycleBusy(true);
+    setError(null);
+    if (activeCycle) {
+      const ok = await closeCycle(activeCycle.id);
+      if (!ok) setError("No se pudo cerrar el ciclo de pedidos.");
+      else setActiveCycle(null);
+    } else {
+      const cycle = await createCycle();
+      if (!cycle) setError("No se pudo abrir el ciclo de pedidos.");
+      else setActiveCycle(cycle);
+    }
+    setCycleBusy(false);
+  };
 
   const onSubmit = async (data: VentaForm) => {
     setSaving(true);
@@ -125,15 +147,39 @@ const Ventas = () => {
 
   return (
     <section className="space-y-8">
-      <header className="space-y-1">
-        <h1 className="font-display text-3xl font-bold">Ventas</h1>
-        <p className="text-ink-muted">
-          Registro de paquetes vendidos a personas (ej. Carlos — 3 paquetes).
-        </p>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="font-display text-3xl font-bold">Ventas</h1>
+          <p className="text-ink-muted">
+            Registro de paquetes a personas. Abre pedidos para que te pidan desde
+            el enlace público.
+          </p>
+        </div>
+        <div className="space-y-2 text-right">
+          <StatusPill tone={activeCycle ? "ok" : "warn"}>
+            {activeCycle ? "Pedidos abiertos" : "Pedidos cerrados"}
+          </StatusPill>
+          <div>
+            <Button
+              variant={activeCycle ? "ghost" : "primary"}
+              onClick={onToggleCycle}
+              disabled={cycleBusy}
+            >
+              {cycleBusy
+                ? "…"
+                : activeCycle
+                  ? "Cerrar pedidos"
+                  : "Abrir pedidos"}
+            </Button>
+          </div>
+        </div>
       </header>
 
       {error && (
-        <p className="rounded-md border border-blood/30 bg-blood/10 px-3 py-2 text-sm text-blood" role="alert">
+        <p
+          className="rounded-md border border-blood/30 bg-blood/10 px-3 py-2 text-sm text-blood"
+          role="alert"
+        >
           {error}
         </p>
       )}
@@ -168,7 +214,9 @@ const Ventas = () => {
                 <input
                   type="number"
                   min={1}
-                  {...register(`products.${index}.amount`, { valueAsNumber: true })}
+                  {...register(`products.${index}.amount`, {
+                    valueAsNumber: true,
+                  })}
                   className="w-24 rounded-md border border-line bg-paper px-3 py-2"
                 />
                 <button
@@ -196,7 +244,11 @@ const Ventas = () => {
           </div>
 
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" {...register("payment")} className="size-4 accent-ok" />
+            <input
+              type="checkbox"
+              {...register("payment")}
+              className="size-4 accent-ok"
+            />
             Ya pagó
           </label>
 

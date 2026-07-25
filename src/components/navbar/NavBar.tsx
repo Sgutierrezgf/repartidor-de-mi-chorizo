@@ -9,6 +9,7 @@ const links = [
   { to: "/private/ventas", label: "Ventas" },
   { to: "/private/envios", label: "Envíos" },
   { to: "/private/receta", label: "Receta" },
+  { to: "/private/resumen", label: "Resumen" },
 ];
 
 export const NavBar = () => {
