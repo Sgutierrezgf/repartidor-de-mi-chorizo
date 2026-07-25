@@ -57,7 +57,13 @@ export const GlobalProvider = ({ children }: GlobalProps) => {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-ink-muted">
+        Cargando tu registro…
+      </div>
+    );
+  }
 
   return (
     <GlobalContext.Provider value={{ auth, setAuth }}>

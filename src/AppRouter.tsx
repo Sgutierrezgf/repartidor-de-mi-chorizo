@@ -4,14 +4,13 @@ import { PrivateGuard } from "./guard/PrivateGuard";
 import { PrivateRouter } from "./pages/private/PrivateRouter";
 import RoutesWithNotFound from "./components/RoutesWithNotFound/RoutesWithNotFound";
 
-
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <RoutesWithNotFound>
-        <Route path="/" element={<Navigate to={"/login"} />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
-        <Route element={ <PrivateGuard />}>
+        <Route element={<PrivateGuard />}>
           <Route path="/private/*" element={<PrivateRouter />} />
         </Route>
       </RoutesWithNotFound>
