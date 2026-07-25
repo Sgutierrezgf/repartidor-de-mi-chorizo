@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
@@ -16,22 +17,28 @@ import {
   type ReporteVenta,
 } from "../../../services/enviosApi";
 
-const envioSchema = z
-  .object({
-    person_name: z.string().min(2, "Escribe quién recibe"),
-    normal: z.number().min(0),
-    pepper: z.number().min(0),
-    spicy: z.number().min(0),
-    notes: z.string().optional(),
-  })
-  .refine((v) => v.normal + v.pepper + v.spicy > 0, {
-    message: "Envía al menos 1 paquete",
-    path: ["normal"],
-  });
-
-type EnvioForm = z.infer<typeof envioSchema>;
-
 const Envios = () => {
+  const { t } = useTranslation();
+
+  const envioSchema = useMemo(
+    () =>
+      z
+        .object({
+          person_name: z.string().min(2, t("envios.personRequired")),
+          normal: z.number().min(0),
+          pepper: z.number().min(0),
+          spicy: z.number().min(0),
+          notes: z.string().optional(),
+        })
+        .refine((v) => v.normal + v.pepper + v.spicy > 0, {
+          message: t("envios.minPackages"),
+          path: ["normal"],
+        }),
+    [t]
+  );
+
+  type EnvioForm = z.infer<typeof envioSchema>;
+
   const [envios, setEnvios] = useState<Envio[]>([]);
   const [reportes, setReportes] = useState<ReporteVenta[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +60,7 @@ const Envios = () => {
     setError(null);
     const data = await getEnvios();
     if (!data) {
-      setError("No se pudieron cargar los envíos. ¿Corriste supabase/schema.sql?");
+      setError(t("envios.loadError"));
       setLoading(false);
       return;
     }
@@ -64,7 +71,9 @@ const Envios = () => {
   };
 
   useEffect(() => {
-    load();
+    void load();
+    // Initial load only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const statsByEnvio = useMemo(() => {
@@ -92,11 +101,8 @@ const Envios = () => {
   return (
     <section className="space-y-8">
       <header className="space-y-1">
-        <h1 className="font-display text-3xl font-bold">Envíos</h1>
-        <p className="text-ink-muted">
-          Lotes que mandas a otra persona para que venda. Luego marcas cuántos
-          vendió (cualquier día) y si ya te pagó.
-        </p>
+        <h1 className="font-display text-3xl font-bold">{t("envios.title")}</h1>
+        <p className="text-ink-muted">{t("envios.subtitle")}</p>
       </header>
 
       {error && (
@@ -106,14 +112,16 @@ const Envios = () => {
       )}
 
       <Panel>
-        <h2 className="font-display text-xl font-bold">Nuevo envío</h2>
+        <h2 className="font-display text-xl font-bold">{t("envios.newShipment")}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <label className="mb-1 block text-sm font-semibold">Persona / lugar</label>
+            <label className="mb-1 block text-sm font-semibold">
+              {t("envios.personPlace")}
+            </label>
             <input
               {...register("person_name")}
               className="w-full rounded-md border border-line bg-paper px-3 py-2 outline-none focus:border-blood"
-              placeholder="Ej. Juan del mercado"
+              placeholder={t("envios.personPlaceholder")}
             />
             {errors.person_name && (
               <p className="mt-1 text-sm text-blood">{errors.person_name.message}</p>
@@ -121,7 +129,7 @@ const Envios = () => {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold">Normal</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.normal")}</label>
             <input
               type="number"
               min={0}
@@ -130,7 +138,7 @@ const Envios = () => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold">Pimienta</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.pepper")}</label>
             <input
               type="number"
               min={0}
@@ -139,7 +147,7 @@ const Envios = () => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold">Picante</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.spicy")}</label>
             <input
               type="number"
               min={0}
@@ -151,29 +159,29 @@ const Envios = () => {
             )}
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold">Nota (opcional)</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.note")}</label>
             <input
               {...register("notes")}
               className="w-full rounded-md border border-line bg-paper px-3 py-2"
-              placeholder="Ej. lote del sábado"
+              placeholder={t("envios.notePlaceholder")}
             />
           </div>
 
           <div className="sm:col-span-2">
             <Button type="submit" disabled={saving}>
-              {saving ? "Guardando…" : "Registrar envío"}
+              {saving ? t("common.saving") : t("envios.saveShipment")}
             </Button>
           </div>
         </form>
       </Panel>
 
       <div className="space-y-3">
-        <h2 className="font-display text-xl font-bold">Tus envíos</h2>
+        <h2 className="font-display text-xl font-bold">{t("envios.listTitle")}</h2>
         {loading ? (
-          <p className="text-ink-muted">Cargando…</p>
+          <p className="text-ink-muted">{t("common.loading")}</p>
         ) : envios.length === 0 ? (
           <Panel>
-            <p className="text-ink-muted">Aún no hay envíos.</p>
+            <p className="text-ink-muted">{t("envios.empty")}</p>
           </Panel>
         ) : (
           envios.map((envio) => {
@@ -191,19 +199,32 @@ const Envios = () => {
                   <div>
                     <h3 className="font-display text-lg font-bold">{envio.person_name}</h3>
                     <p className="text-sm text-ink-muted">
-                      Enviado: {sent} ({envio.normal}n / {envio.pepper}pim / {envio.spicy}pic)
+                      {t("envios.sent", {
+                        total: sent,
+                        normal: envio.normal,
+                        pepper: envio.pepper,
+                        spicy: envio.spicy,
+                      })}
                     </p>
                   </div>
                   <StatusPill tone={envio.closed ? "neutral" : quedan === 0 ? "ok" : "blood"}>
-                    {envio.closed ? "Cerrado" : quedan === 0 ? "Sin stock" : "Abierto"}
+                    {envio.closed
+                      ? t("envios.closed")
+                      : quedan === 0
+                        ? t("envios.noStock")
+                        : t("envios.open")}
                   </StatusPill>
                 </div>
 
                 <div className="flex flex-wrap gap-2 text-sm">
-                  <StatusPill tone="neutral">{`Vendidos ${stats.vendidos}`}</StatusPill>
-                  <StatusPill tone="neutral">{`Quedan ${quedan}`}</StatusPill>
+                  <StatusPill tone="neutral">
+                    {t("envios.sold", { count: stats.vendidos })}
+                  </StatusPill>
+                  <StatusPill tone="neutral">
+                    {t("envios.remaining", { count: quedan })}
+                  </StatusPill>
                   <StatusPill tone={stats.porCobrar ? "warn" : "ok"}>
-                    {`Por cobrar ${stats.porCobrar}`}
+                    {t("envios.unpaid", { count: stats.porCobrar })}
                   </StatusPill>
                 </div>
 
@@ -211,7 +232,7 @@ const Envios = () => {
                   to={`/private/envios/${envio.id}`}
                   className="inline-flex text-sm font-semibold text-blood hover:underline"
                 >
-                  Ver detalle y marcar ventas →
+                  {t("envios.viewDetail")}
                 </Link>
               </Panel>
             );

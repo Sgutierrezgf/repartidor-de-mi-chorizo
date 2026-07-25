@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { GlobalContext } from "./global.context";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "../utilities";
@@ -18,6 +19,7 @@ interface GlobalProps {
 }
 
 export const GlobalProvider = ({ children }: GlobalProps) => {
+  const { t } = useTranslation();
   const [auth, setAuth] = useState<AuthState>(initialAuth);
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +62,7 @@ export const GlobalProvider = ({ children }: GlobalProps) => {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center text-ink-muted">
-        Cargando tu registro…
+        {t("common.loadingRegister")}
       </div>
     );
   }

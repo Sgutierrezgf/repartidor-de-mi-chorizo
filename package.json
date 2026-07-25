@@ -13,9 +13,11 @@
     "@hookform/resolvers": "^5.2.2",
     "@supabase/supabase-js": "^2.81.1",
     "@tailwindcss/vite": "^4.1.17",
+    "i18next": "^26.3.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.65.0",
+    "react-i18next": "^17.0.11",
     "react-router-dom": "^7.9.6",
     "tailwindcss": "^4.1.17",
     "zod": "^4.1.12"

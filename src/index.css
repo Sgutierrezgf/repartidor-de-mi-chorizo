@@ -1,35 +1,72 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic tokens — light notebook (default) */
+:root {
+  --paper: #e4dfd6;
+  --paper-deep: #d4cdc1;
+  --surface: #f5f1ea;
+  --ink: #1a1614;
+  --ink-muted: #5a524b;
+  --blood: #6b1d1d;
+  --blood-hover: #541616;
+  --wood: #7d6348;
+  --ok: #2f5d3a;
+  --warn: #8a5a12;
+  --line: #c9c0b3;
+}
+
+/* Dark notebook — warm charcoal, not cold gray UI */
+.dark {
+  --paper: #1a1714;
+  --paper-deep: #12100e;
+  --surface: #24201c;
+  --ink: #efe8df;
+  --ink-muted: #a89f93;
+  --blood: #c45a5a;
+  --blood-hover: #d46d6d;
+  --wood: #b8956c;
+  --ok: #7aaf84;
+  --warn: #d4a04a;
+  --line: #3a342e;
+}
+
 @theme {
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --font-sans: "Nunito Sans", system-ui, sans-serif;
 
-  --color-paper: #e4dfd6;
-  --color-paper-deep: #d4cdc1;
-  --color-surface: #f5f1ea;
-  --color-ink: #1a1614;
-  --color-ink-muted: #5a524b;
-  --color-blood: #6b1d1d;
-  --color-blood-hover: #541616;
-  --color-wood: #7d6348;
-  --color-ok: #2f5d3a;
-  --color-warn: #8a5a12;
-  --color-line: #c9c0b3;
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-blood: var(--blood);
+  --color-blood-hover: var(--blood-hover);
+  --color-wood: var(--wood);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-line: var(--line);
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
-    color: var(--color-ink);
-    background: var(--color-paper);
+    color: var(--ink);
+    background: var(--paper);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
     min-height: 100vh;
     background:
-      radial-gradient(ellipse at top left, rgba(125, 99, 72, 0.08), transparent 45%),
-      radial-gradient(ellipse at bottom right, rgba(107, 29, 29, 0.06), transparent 40%),
-      var(--color-paper);
+      radial-gradient(ellipse at top left, color-mix(in srgb, var(--wood) 14%, transparent), transparent 45%),
+      radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--blood) 10%, transparent), transparent 40%),
+      var(--paper);
   }
 
   h1,

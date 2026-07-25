@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
@@ -18,20 +19,25 @@ import {
   type ReporteVenta,
 } from "../../../services/enviosApi";
 
-const reporteSchema = z.object({
-  quantity: z.number().min(1, "Mínimo 1"),
-  sold_at: z.string().min(1, "Fecha requerida"),
-  paid: z.boolean(),
-  notes: z.string().optional(),
-});
-
-type ReporteForm = z.infer<typeof reporteSchema>;
-
 const today = () => new Date().toISOString().slice(0, 10);
 
 const EnvioDetalle = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const envioId = Number(id);
+
+  const reporteSchema = useMemo(
+    () =>
+      z.object({
+        quantity: z.number().min(1, t("ventas.minAmount")),
+        sold_at: z.string().min(1, t("ventas.minAmount")),
+        paid: z.boolean(),
+        notes: z.string().optional(),
+      }),
+    [t]
+  );
+
+  type ReporteForm = z.infer<typeof reporteSchema>;
 
   const [envio, setEnvio] = useState<Envio | null>(null);
   const [reportes, setReportes] = useState<ReporteVenta[]>([]);
@@ -61,7 +67,7 @@ const EnvioDetalle = () => {
     const load = async () => {
       if (!Number.isFinite(envioId)) {
         if (!cancelled) {
-          setError("Envío inválido");
+          setError(t("envios.invalid"));
           setLoading(false);
         }
         return;
@@ -77,7 +83,7 @@ const EnvioDetalle = () => {
       if (cancelled) return;
 
       if (!envioData) {
-        setError("No se encontró el envío.");
+        setError(t("envios.notFound"));
         setLoading(false);
         return;
       }
@@ -91,7 +97,7 @@ const EnvioDetalle = () => {
     return () => {
       cancelled = true;
     };
-  }, [envioId]);
+  }, [envioId, t]);
 
   const reload = async () => {
     if (!Number.isFinite(envioId)) return;
@@ -111,7 +117,7 @@ const EnvioDetalle = () => {
     if (!envio) return;
 
     if (data.quantity > quedan) {
-      setError(`Solo quedan ${quedan} paquetes en este envío.`);
+      setError(t("envios.onlyRemaining", { count: quedan }));
       return;
     }
 
@@ -165,15 +171,15 @@ const EnvioDetalle = () => {
   };
 
   if (loading) {
-    return <p className="text-ink-muted">Cargando envío…</p>;
+    return <p className="text-ink-muted">{t("envios.loading")}</p>;
   }
 
   if (!envio) {
     return (
       <Panel>
-        <p className="text-blood">{error ?? "Envío no encontrado"}</p>
+        <p className="text-blood">{error ?? t("envios.notFound")}</p>
         <Link to="/private/envios" className="mt-3 inline-block text-sm font-semibold text-blood">
-          ← Volver a envíos
+          {t("envios.back")}
         </Link>
       </Panel>
     );
@@ -183,21 +189,27 @@ const EnvioDetalle = () => {
     <section className="space-y-8">
       <div>
         <Link to="/private/envios" className="text-sm font-semibold text-ink-muted hover:text-ink">
-          ← Envíos
+          {t("envios.back")}
         </Link>
         <header className="mt-3 space-y-2">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="font-display text-3xl font-bold">{envio.person_name}</h1>
             <StatusPill tone={envio.closed ? "neutral" : "blood"}>
-              {envio.closed ? "Cerrado" : "Abierto"}
+              {envio.closed ? t("envios.closed") : t("envios.open")}
             </StatusPill>
           </div>
           <p className="text-ink-muted">
-            Enviados {sent} · Vendidos {stats.vendidos} · Quedan {quedan} · Por
-            cobrar {stats.porCobrar}
+            {t("envios.summary", {
+              sent,
+              sold: stats.vendidos,
+              remaining: quedan,
+              unpaid: stats.porCobrar,
+            })}
           </p>
           {envio.notes && (
-            <p className="text-sm text-ink-muted">Nota: {envio.notes}</p>
+            <p className="text-sm text-ink-muted">
+              {t("envios.noteLabel", { note: envio.notes })}
+            </p>
           )}
         </header>
       </div>
@@ -209,15 +221,12 @@ const EnvioDetalle = () => {
       )}
 
       <Panel>
-        <h2 className="font-display text-xl font-bold">Marcar venta reportada</h2>
-        <p className="mt-1 text-sm text-ink-muted">
-          Cuando te digan “vendí 5”, lo anotas aquí. Si aún no te pagan, deja
-          “Ya me pagó” sin marcar.
-        </p>
+        <h2 className="font-display text-xl font-bold">{t("envios.markSale")}</h2>
+        <p className="mt-1 text-sm text-ink-muted">{t("envios.markSaleHelp")}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-semibold">Paquetes vendidos</label>
+            <label className="mb-1 block text-sm font-semibold">{t("envios.qtySold")}</label>
             <input
               type="number"
               min={1}
@@ -231,7 +240,7 @@ const EnvioDetalle = () => {
             )}
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold">Fecha</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.date")}</label>
             <input
               type="date"
               {...register("sold_at")}
@@ -240,11 +249,11 @@ const EnvioDetalle = () => {
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="mb-1 block text-sm font-semibold">Nota (opcional)</label>
+            <label className="mb-1 block text-sm font-semibold">{t("common.note")}</label>
             <input
               {...register("notes")}
               className="w-full rounded-md border border-line bg-paper px-3 py-2"
-              placeholder="Ej. me lo dijo por WhatsApp"
+              placeholder={t("envios.whatsappNote")}
               disabled={envio.closed || quedan === 0}
             />
           </div>
@@ -255,14 +264,14 @@ const EnvioDetalle = () => {
               className="size-4 accent-ok"
               disabled={envio.closed || quedan === 0}
             />
-            Ya me pagó estos paquetes
+            {t("envios.paidThese")}
           </label>
           <div className="sm:col-span-2 flex flex-wrap gap-2">
             <Button type="submit" disabled={saving || envio.closed || quedan === 0}>
-              {saving ? "Guardando…" : "Agregar reporte"}
+              {saving ? t("common.saving") : t("envios.addReport")}
             </Button>
             <Button type="button" variant="ghost" onClick={onToggleClosed}>
-              {envio.closed ? "Reabrir envío" : "Cerrar envío"}
+              {envio.closed ? t("envios.reopen") : t("envios.close")}
             </Button>
           </div>
         </form>
@@ -270,18 +279,18 @@ const EnvioDetalle = () => {
 
       <Panel className="overflow-x-auto p-0 sm:p-0">
         <div className="border-b border-line px-5 py-4">
-          <h2 className="font-display text-xl font-bold">Historial de ventas</h2>
+          <h2 className="font-display text-xl font-bold">{t("envios.history")}</h2>
         </div>
         {reportes.length === 0 ? (
-          <p className="p-5 text-ink-muted">Todavía no hay reportes en este envío.</p>
+          <p className="p-5 text-ink-muted">{t("envios.historyEmpty")}</p>
         ) : (
           <table className="w-full min-w-[480px] text-left text-sm">
             <thead className="border-b border-line bg-paper-deep/50 text-ink-muted">
               <tr>
-                <th className="px-4 py-3 font-semibold">Fecha</th>
-                <th className="px-4 py-3 font-semibold">Vendidos</th>
-                <th className="px-4 py-3 font-semibold">Pago</th>
-                <th className="px-4 py-3 font-semibold">Nota</th>
+                <th className="px-4 py-3 font-semibold">{t("common.date")}</th>
+                <th className="px-4 py-3 font-semibold">{t("envios.qtySold")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.paid")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.note")}</th>
               </tr>
             </thead>
             <tbody>
@@ -299,7 +308,7 @@ const EnvioDetalle = () => {
                         className="size-4 accent-ok"
                       />
                       <StatusPill tone={reporte.paid ? "ok" : "warn"}>
-                        {reporte.paid ? "Pagado" : "Debe"}
+                        {reporte.paid ? t("common.paid") : t("common.unpaid")}
                       </StatusPill>
                     </label>
                   </td>

@@ -1,25 +1,39 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
 import { useGlobalContext } from "../../context/global.context";
 import { supabase } from "../../utilities";
-import { type LoginFormValues, loginFormSchema } from "./models";
 import { Button } from "../bottons/Button";
+import { PrefsControls } from "../prefs/PrefsControls";
 import logo from "../../assets/img/chorizos.jpeg";
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setAuth } = useGlobalContext();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        email: z.email({ message: t("login.emailInvalid") }),
+        password: z.string().min(6, { message: t("login.passwordMin") }),
+      }),
+    [t]
+  );
+
+  type LoginFormValues = z.infer<typeof schema>;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
@@ -48,6 +62,9 @@ export const LoginForm = () => {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4 py-10">
+      <div className="mb-4 flex justify-end">
+        <PrefsControls />
+      </div>
       <div className="rounded-lg border border-line bg-surface p-6 sm:p-8">
         <div className="mb-6 flex items-center gap-3">
           <img
@@ -56,15 +73,15 @@ export const LoginForm = () => {
             className="h-14 w-14 rounded-full object-cover ring-1 ring-line"
           />
           <div>
-            <h1 className="font-display text-2xl font-bold">Mi registro</h1>
-            <p className="text-sm text-ink-muted">Entra a tu libreta de ventas</p>
+            <h1 className="font-display text-2xl font-bold">{t("brand.title")}</h1>
+            <p className="text-sm text-ink-muted">{t("brand.loginSubtitle")}</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="mb-1 block text-sm font-semibold" htmlFor="email">
-              Email
+              {t("login.email")}
             </label>
             <input
               id="email"
@@ -80,7 +97,7 @@ export const LoginForm = () => {
 
           <div>
             <label className="mb-1 block text-sm font-semibold" htmlFor="password">
-              Contraseña
+              {t("login.password")}
             </label>
             <input
               id="password"
@@ -101,7 +118,7 @@ export const LoginForm = () => {
           )}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Entrando…" : "Entrar"}
+            {isSubmitting ? t("login.submitting") : t("login.submit")}
           </Button>
         </form>
       </div>

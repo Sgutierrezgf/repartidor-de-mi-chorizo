@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Panel } from "../../../components/ui/Panel";
 import { Button } from "../../../components/bottons/Button";
 import { getCyclesSummary } from "../../../services/ventasApi";
@@ -8,6 +9,8 @@ const money = (n: number) =>
   n.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
 const Resumen = () => {
+  const { t } = useTranslation();
+
   const [cycles, setCycles] = useState<CycleSummary[]>([]);
   const [selectedCycle, setSelectedCycle] = useState<number | "">("");
   const [costosProduccion, setCostosProduccion] = useState("");
@@ -42,15 +45,13 @@ const Resumen = () => {
   return (
     <section className="space-y-8">
       <header className="space-y-1">
-        <h1 className="font-display text-3xl font-bold">Resumen</h1>
-        <p className="text-ink-muted">
-          Mira un ciclo de pedidos y calcula ingresos / gastos / ganancia.
-        </p>
+        <h1 className="font-display text-3xl font-bold">{t("resumen.title")}</h1>
+        <p className="text-ink-muted">{t("resumen.subtitle")}</p>
       </header>
 
       <Panel className="space-y-4">
         <div>
-          <label className="mb-1 block text-sm font-semibold">Ciclo</label>
+          <label className="mb-1 block text-sm font-semibold">{t("resumen.cycle")}</label>
           <select
             className="w-full rounded-md border border-line bg-paper px-3 py-2"
             value={selectedCycle === "" ? "" : String(selectedCycle)}
@@ -58,12 +59,14 @@ const Resumen = () => {
               setSelectedCycle(e.target.value === "" ? "" : Number(e.target.value))
             }
           >
-            <option value="">Selecciona un ciclo</option>
+            <option value="">{t("resumen.selectCycle")}</option>
             {cycles.map((cycle) => (
               <option key={cycle.id} value={cycle.id}>
-                Ciclo #{cycle.id}
-                {cycle.is_open ? " (abierto)" : ""} —{" "}
-                {new Date(cycle.created_at).toLocaleDateString("es-CO")}
+                {t("resumen.cycleOption", {
+                  id: cycle.id,
+                  open: cycle.is_open ? t("resumen.openSuffix") : "",
+                  date: new Date(cycle.created_at).toLocaleDateString("es-CO"),
+                })}
               </option>
             ))}
           </select>
@@ -72,7 +75,7 @@ const Resumen = () => {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm font-semibold">
-              Costos de producción
+              {t("resumen.productionCosts")}
             </label>
             <input
               type="number"
@@ -83,7 +86,9 @@ const Resumen = () => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold">Domicilios</label>
+            <label className="mb-1 block text-sm font-semibold">
+              {t("resumen.deliveryFees")}
+            </label>
             <input
               type="number"
               placeholder="Ej: 20000"
@@ -95,7 +100,7 @@ const Resumen = () => {
         </div>
 
         <Button onClick={generarReporte} disabled={selectedCycle === ""}>
-          Generar reporte
+          {t("resumen.generate")}
         </Button>
       </Panel>
 
@@ -103,56 +108,56 @@ const Resumen = () => {
         <div className="space-y-4">
           <Panel>
             <h2 className="font-display text-xl font-bold">
-              Ciclo #{cicloInfo.id}
+              {t("resumen.cycleTitle", { id: cicloInfo.id })}
             </h2>
             <p className="mt-1 text-sm text-ink-muted">
               {new Date(cicloInfo.created_at).toLocaleDateString("es-CO")}
             </p>
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Clientes</p>
+                <p className="text-xs text-ink-muted">{t("resumen.clients")}</p>
                 <p className="text-lg font-bold">{cicloInfo.totalClients}</p>
               </div>
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Normal</p>
+                <p className="text-xs text-ink-muted">{t("common.normal")}</p>
                 <p className="text-lg font-bold">{cicloInfo.totalNormal}</p>
               </div>
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Pimienta</p>
+                <p className="text-xs text-ink-muted">{t("common.pepper")}</p>
                 <p className="text-lg font-bold">{cicloInfo.totalPepper}</p>
               </div>
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Picante</p>
+                <p className="text-xs text-ink-muted">{t("common.spicy")}</p>
                 <p className="text-lg font-bold">{cicloInfo.totalSpicy}</p>
               </div>
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Total paquetes</p>
+                <p className="text-xs text-ink-muted">{t("resumen.totalPackages")}</p>
                 <p className="text-lg font-bold">{cicloInfo.total}</p>
               </div>
               <div className="rounded-md bg-paper p-3">
-                <p className="text-xs text-ink-muted">Pagados</p>
+                <p className="text-xs text-ink-muted">{t("resumen.paidCount")}</p>
                 <p className="text-lg font-bold">{cicloInfo.totalPaid}</p>
               </div>
             </div>
           </Panel>
 
           <Panel>
-            <h3 className="font-display text-lg font-bold">Finanzas</h3>
+            <h3 className="font-display text-lg font-bold">{t("resumen.finance")}</h3>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
-                Pedidos: <strong>{reporte.pedidos}</strong>
+                {t("resumen.orders")}: <strong>{reporte.pedidos}</strong>
               </li>
               <li>
-                Ingresos: <strong>{money(reporte.ingresos)}</strong>
+                {t("resumen.income")}: <strong>{money(reporte.ingresos)}</strong>
               </li>
               <li>
-                Domicilios: <strong>{money(reporte.domicilioTotal)}</strong>
+                {t("resumen.delivery")}: <strong>{money(reporte.domicilioTotal)}</strong>
               </li>
               <li>
-                Producción: <strong>{money(reporte.gastos)}</strong>
+                {t("resumen.production")}: <strong>{money(reporte.gastos)}</strong>
               </li>
               <li className="border-t border-line pt-3">
-                Ganancia:{" "}
+                {t("resumen.profit")}:{" "}
                 <strong className={reporte.ganancia >= 0 ? "text-ok" : "text-blood"}>
                   {money(reporte.ganancia)}
                 </strong>

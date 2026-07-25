@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
@@ -16,24 +17,30 @@ import {
 } from "../../../services/ventasApi";
 import type { ActiveCycle } from "../../../types/cycles";
 
-const ventaSchema = z.object({
-  name: z.string().min(2, "Escribe el nombre"),
-  products: z
-    .array(
-      z.object({
-        type: z.enum(["normal", "pimienta", "picante"]),
-        amount: z.number().min(1, "Mínimo 1"),
-      })
-    )
-    .min(1, "Agrega al menos un tipo"),
-  payment: z.boolean(),
-});
-
-type VentaForm = z.infer<typeof ventaSchema>;
-
 const totalPackages = (v: VentaDirecta) => v.normal + v.pepper + v.spicy;
 
 const Ventas = () => {
+  const { t } = useTranslation();
+
+  const ventaSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, t("ventas.nameRequired")),
+        products: z
+          .array(
+            z.object({
+              type: z.enum(["normal", "pimienta", "picante"]),
+              amount: z.number().min(1, t("ventas.minAmount")),
+            })
+          )
+          .min(1, t("ventas.minProducts")),
+        payment: z.boolean(),
+      }),
+    [t]
+  );
+
+  type VentaForm = z.infer<typeof ventaSchema>;
+
   const [ventas, setVentas] = useState<VentaDirecta[]>([]);
   const [activeCycle, setActiveCycle] = useState<ActiveCycle | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,13 +74,15 @@ const Ventas = () => {
     setError(null);
     const [data, cycle] = await Promise.all([getVentas(), getActiveCycle()]);
     if (data) setVentas(data);
-    else setError("No se pudieron cargar las ventas.");
+    else setError(t("ventas.loadError"));
     setActiveCycle(cycle);
     setLoading(false);
   };
 
   useEffect(() => {
-    load();
+    void load();
+    // Initial load only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onToggleCycle = async () => {
@@ -81,11 +90,11 @@ const Ventas = () => {
     setError(null);
     if (activeCycle) {
       const ok = await closeCycle(activeCycle.id);
-      if (!ok) setError("No se pudo cerrar el ciclo de pedidos.");
+      if (!ok) setError(t("ventas.closeError"));
       else setActiveCycle(null);
     } else {
       const cycle = await createCycle();
-      if (!cycle) setError("No se pudo abrir el ciclo de pedidos.");
+      if (!cycle) setError(t("ventas.openError"));
       else setActiveCycle(cycle);
     }
     setCycleBusy(false);
@@ -149,15 +158,12 @@ const Ventas = () => {
     <section className="space-y-8">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="font-display text-3xl font-bold">Ventas</h1>
-          <p className="text-ink-muted">
-            Registro de paquetes a personas. Abre pedidos para que te pidan desde
-            el enlace público.
-          </p>
+          <h1 className="font-display text-3xl font-bold">{t("ventas.title")}</h1>
+          <p className="text-ink-muted">{t("ventas.subtitle")}</p>
         </div>
         <div className="space-y-2 text-right">
           <StatusPill tone={activeCycle ? "ok" : "warn"}>
-            {activeCycle ? "Pedidos abiertos" : "Pedidos cerrados"}
+            {activeCycle ? t("ventas.ordersOpen") : t("ventas.ordersClosed")}
           </StatusPill>
           <div>
             <Button
@@ -168,8 +174,8 @@ const Ventas = () => {
               {cycleBusy
                 ? "…"
                 : activeCycle
-                  ? "Cerrar pedidos"
-                  : "Abrir pedidos"}
+                  ? t("ventas.closeOrders")
+                  : t("ventas.openOrders")}
             </Button>
           </div>
         </div>
@@ -185,14 +191,16 @@ const Ventas = () => {
       )}
 
       <Panel>
-        <h2 className="font-display text-xl font-bold">Nueva venta</h2>
+        <h2 className="font-display text-xl font-bold">{t("ventas.newSale")}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-semibold">Persona</label>
+            <label className="mb-1 block text-sm font-semibold">
+              {t("common.person")}
+            </label>
             <input
               {...register("name")}
               className="w-full rounded-md border border-line bg-paper px-3 py-2 outline-none focus:border-blood"
-              placeholder="Nombre"
+              placeholder={t("common.name")}
             />
             {errors.name && (
               <p className="mt-1 text-sm text-blood">{errors.name.message}</p>
@@ -200,16 +208,16 @@ const Ventas = () => {
           </div>
 
           <div className="space-y-3">
-            <p className="text-sm font-semibold">Paquetes</p>
+            <p className="text-sm font-semibold">{t("ventas.packages")}</p>
             {fields.map((field, index) => (
               <div key={field.id} className="flex flex-wrap items-center gap-2">
                 <select
                   {...register(`products.${index}.type`)}
                   className="rounded-md border border-line bg-paper px-3 py-2"
                 >
-                  <option value="normal">Normal</option>
-                  <option value="pimienta">Pimienta</option>
-                  <option value="picante">Picante</option>
+                  <option value="normal">{t("common.normal")}</option>
+                  <option value="pimienta">{t("common.pepper")}</option>
+                  <option value="picante">{t("common.spicy")}</option>
                 </select>
                 <input
                   type="number"
@@ -225,7 +233,7 @@ const Ventas = () => {
                   disabled={fields.length === 1}
                   onClick={() => remove(index)}
                 >
-                  Quitar
+                  {t("common.remove")}
                 </button>
               </div>
             ))}
@@ -239,7 +247,7 @@ const Ventas = () => {
               variant="ghost"
               onClick={() => append({ type: "normal", amount: 1 })}
             >
-              + Agregar tipo
+              {t("common.addType")}
             </Button>
           </div>
 
@@ -249,37 +257,39 @@ const Ventas = () => {
               {...register("payment")}
               className="size-4 accent-ok"
             />
-            Ya pagó
+            {t("common.alreadyPaid")}
           </label>
 
           <Button type="submit" disabled={saving}>
-            {saving ? "Guardando…" : "Guardar venta"}
+            {saving ? t("common.saving") : t("ventas.saveSale")}
           </Button>
         </form>
       </Panel>
 
       <div className="flex flex-wrap gap-2 text-sm">
-        <StatusPill tone="neutral">{`${ventas.length} ventas`}</StatusPill>
+        <StatusPill tone="neutral">
+          {t("ventas.count", { count: ventas.length })}
+        </StatusPill>
         <StatusPill tone={unpaid.length ? "warn" : "ok"}>
-          {`${unpaid.length} por cobrar`}
+          {t("ventas.unpaidCount", { count: unpaid.length })}
         </StatusPill>
       </div>
 
       <Panel className="overflow-x-auto p-0 sm:p-0">
         {loading ? (
-          <p className="p-5 text-ink-muted">Cargando ventas…</p>
+          <p className="p-5 text-ink-muted">{t("common.loading")}</p>
         ) : ventas.length === 0 ? (
-          <p className="p-5 text-ink-muted">Todavía no hay ventas registradas.</p>
+          <p className="p-5 text-ink-muted">{t("ventas.empty")}</p>
         ) : (
           <table className="w-full min-w-[560px] text-left text-sm">
             <thead className="border-b border-line bg-paper-deep/50 text-ink-muted">
               <tr>
-                <th className="px-4 py-3 font-semibold">Persona</th>
-                <th className="px-4 py-3 font-semibold">Normal</th>
-                <th className="px-4 py-3 font-semibold">Pimienta</th>
-                <th className="px-4 py-3 font-semibold">Picante</th>
-                <th className="px-4 py-3 font-semibold">Total</th>
-                <th className="px-4 py-3 font-semibold">Pago</th>
+                <th className="px-4 py-3 font-semibold">{t("common.person")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.normal")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.pepper")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.spicy")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.total")}</th>
+                <th className="px-4 py-3 font-semibold">{t("common.paid")}</th>
               </tr>
             </thead>
             <tbody>
@@ -300,7 +310,7 @@ const Ventas = () => {
                         className="size-4 accent-ok"
                       />
                       <StatusPill tone={venta.payment ? "ok" : "warn"}>
-                        {venta.payment ? "Pagado" : "Debe"}
+                        {venta.payment ? t("common.paid") : t("common.unpaid")}
                       </StatusPill>
                     </label>
                   </td>

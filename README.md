@@ -17,6 +17,7 @@ App personal para tu tienda de chorizos.
 3. En Supabase SQL Editor ejecuta `supabase/schema.sql`
 4. `npm run dev`
 
-## Deploy (Vercel)
+## Preferencias
 
-`vercel.json` ya reescribe rutas al `index.html` para el router.
+- **Idioma**: ES / EN (español por defecto)
+- **Tema**: claro / oscuro — el modo oscuro usa carbón cálido (misma libreta, no un admin gris)
